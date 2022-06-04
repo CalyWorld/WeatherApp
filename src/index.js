@@ -37,14 +37,13 @@ function addTempToClass(num) {
 
 function toggleTemp(num){
     let fahrenheitNum = ctof(num);
-    let celciusNum = ftoc(fahrenheitNum);
     if(tempObject.temp == num){
-        tempObject.temp = fahrenheitNum;
+        tempObject.temp = `${fahrenheitNum}`;
     }else{
-        tempObject.temp = celciusNum;
+        tempObject.temp = num;
     }
+    tempDisplay.textContent = `${Math.round(tempObject.temp)}`;
     console.log(tempObject);
-    tempDisplay.textContent = tempObject.temp;
 }
 
 async function getWeatherApi(url) {
@@ -110,9 +109,9 @@ function allComponents() {
     getTempFeel();
     getHumidity();
     getWind();
-    tempbtn.addEventListener("click", (e) => {
-        toggleTemp(e.target.id);
-    });
 }
 searchbtn.addEventListener("click", allComponents);
+tempbtn.addEventListener("click", (e) => {
+    toggleTemp(e.target.id);
+});
 backgroundImage();
