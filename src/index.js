@@ -4,14 +4,20 @@ const tempDisplay = document.querySelector(".temp_display");
 const tempfeelContainer = document.querySelector(".feels");
 const tempbtn = document.querySelector(".tempbtn");
 let getLocation = document.querySelector("#search");
-const cityError = document.querySelector("#search + span.error");
+const cityError = document.querySelector(".error");
+const mainContainer = document.getElementById("main_container");
 let tempObject;
 
 const backgroundImage = () => {
+    const content = document.querySelector("#content");
     let myImage = new Image();
     myImage.src = imagebackground;
-    myImage.setAttribute("alt", "photo by Mattew Macquarie");
-    document.body.append(myImage);
+    myImage.style.position = "absolute";
+    myImage.style.zIndex = "-1";
+    myImage.style.left = "0px";
+    myImage.style.top = "0px";
+    myImage.setAttribute("alt", "photo by pexel-stein-egil-liland");
+    content.append(myImage);
 }
 const ctof = function (num) {
     let convertedNum = (Math.round(((parseInt(num) * 9 / 5) + 32) * 10) / 10);
@@ -65,31 +71,34 @@ async function getWeatherApi(url) {
     return responses;
 }
 
-async function getTimeApi(url){
+async function getTimeApi(url) {
     const response = await fetch(url, {
-        mode:"cors"
+        mode: "cors"
     });
     let responses = await response.json();
     return responses;
 }
 
-async function loadTimeJson(){
+async function loadTimeJson() {
     let getLocation = document.querySelector("#search").value;
-    const response = await getTimeApi(`https://timezone.abstractapi.com/v1/current_time/?api_key=e8066ba4e95f48e887508396672c695c&location=${getLocation}`,{
-        mode:"cors"
+    const response = await getTimeApi(`https://timezone.abstractapi.com/v1/current_time/?api_key=e8066ba4e95f48e887508396672c695c&location=${getLocation}`, {
+        mode: "cors"
     });
     let timeData = await response;
     return timeData;
 }
 
 async function loadJson() {
-    let getLocation = document.querySelector("#search").value;
-    let weatherApi = getWeatherApi(`https://api.openweathermap.org/data/2.5/weather?q=${getLocation}&units=metric&appid=faa4a0770c3a396ae2aa2262e23c2e0c`, {
-        mode: "cors"
-    });
-    let weatherData = await weatherApi;
-    return weatherData
-}
+
+        let getLocation = document.querySelector("#search").value;
+        let weatherApi = getWeatherApi(`https://api.openweathermap.org/data/2.5/weather?q=${getLocation}&units=metric&appid=faa4a0770c3a396ae2aa2262e23c2e0c`, {
+            mode: "cors"
+        });
+        let weatherData = await weatherApi;
+        return weatherData;
+
+        // throw new Error("oops");
+    }
 
 async function getWeatherDescription() {
     const descriptionContainer = document.querySelector(".description_container");
@@ -101,6 +110,16 @@ async function getWeatherDescription() {
     });
 }
 
+async function getIcon() {
+    const img = document.querySelector("img");
+    let returnedData = await loadJson();
+    let iconData = returnedData.weather;
+    iconData.forEach((data) => {
+        console.log(data.icon);
+        img.src = `http://openweathermap.org/img/wn/${data.icon}@2x.png`;
+    });
+}
+
 async function getCity() {
     const cityContainer = document.querySelector(".city_container");
     let returnedData = await loadJson();
@@ -109,14 +128,13 @@ async function getCity() {
     cityContainer.textContent = `${cityName}.${cityCountry}`;
 }
 
-async function getDateTime(){
-    const {format} = require('date-fns');
+async function getDateTime() {
+    const { format } = require('date-fns');
     let dateTimeContainer = document.querySelector(".dateTime");
     let returnedData = await loadTimeJson();
     let date = new Date(returnedData.datetime);
     let dateFormat = `${format(date, 'EEEE,MMMM do, yyyy hh:mm a')}`;
     dateTimeContainer.textContent = dateFormat;
-   
 }
 
 async function getTemp() {
@@ -152,7 +170,6 @@ async function getWind() {
 }
 
 function allComponents() {
-    const mainContainer = document.getElementById("main_container");
     getDateTime();
     getWeatherDescription();
     getCity();
@@ -160,7 +177,8 @@ function allComponents() {
     getTempFeel();
     getHumidity();
     getWind();
-    tempbtn.style.padding="10px";
+    getIcon();
+    tempbtn.style.padding = "10px";
     tempbtn.style.display = "flex";
     tempbtn.style.justifyContent = "center";
     tempbtn.style.alignItems = "center";
@@ -168,20 +186,10 @@ function allComponents() {
 }
 
 searchbtn.addEventListener("click", () => {
-    if (!getLocation.validity.valid) {
-        showCityError();
-
+    if (getLocation.value == "") {
+        getLocation.value = "Enter a City";
     } else {
         allComponents();
-    }
-});
-
-getLocation.addEventListener("input", () => {
-    if (getLocation.validity.valid) {
-        cityError.textContent = "";
-        cityError.className = "error";
-    } else {
-        showCityError();
     }
 });
 
@@ -190,14 +198,4 @@ tempbtn.addEventListener("click", (e) => {
     toggleTemp(e.target.id, className);
 });
 
-function showCityError() {
-    let getLocation = document.querySelector("#search");
-    if (getLocation.validity.valueMissing) {
-        cityError.textContent = "You should enter a City Name";
-    }
-    else if(getLocation.validity.tooShort){
-        cityError.textContent = `Title name should atleast be ${getLocation.minLength} characters; Name entered is ${getLocation.value.length}.`;
-    }
-    cityError.className = "error active";
-}
 backgroundImage();
