@@ -1,27 +1,117 @@
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    outline: 1px solid red;
 }
 
-body{
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100%;
+    font-weight: 800;
+    height: 100%;
+    overflow: hidden;
+}
+
+ul * {
+    display: flex;
+    padding: 5px
+}
+
+form.weather_form input[type=text] {
+    margin: 0;
+    font-family: inherit;
+    font-size: 90%;
+}
+#search_container{
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 2px;
 }
 
-form.weather_form input[type=text]{
-    font-size: 17px;
-    border: 1px solid grey;
-    float: left;
-    width: 50%;
-    background: #f1f1f1;
-}
- 
-form.weather_form{
-    display:flex;
+
+form.weather_form {
+    display: block;
     justify-content: center;
-    padding:10px;
-    gap:5px;
+    padding: 10px;
+    gap: 5px;
+    margin-bottom: 40px;
+}
+
+.searchbtn {
+    color: #f1f1f1;
+    cursor: pointer;
+}
+
+h1 {
+    padding: 10px;
+}
+
+.temp_display {
+    font-size: xxx-large;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #f1f1f1;
+}
+
+.fa-brands {
+    font-size: 1.5em;
+}
+
+.fa-solid {
+    font-size: 2.5em;
+}
+
+#main_container {
+    display: none;
+    justify-content: center;
+    gap: 30px;
+}
+
+.tempfeel_container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.city_location {
+    padding: 10px;
+}
+
+.temp_container {
+    display: flex;
+    gap: 10px
+}
+
+#button_container {
+    display: flex;
+    gap: 10px;
+}
+
+.temp_parameter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xxx-large;
+}
+.parameter{
+    margin-left:5px;
+}
+.dateTime {
+    display: block;
+    padding: 10px;
+    font-size: small;
+}
+#rightside_container{
+    border-left:1px solid #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
