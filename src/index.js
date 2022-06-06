@@ -4,7 +4,6 @@ const tempDisplay = document.querySelector(".temp_display");
 const tempfeelContainer = document.querySelector(".feels");
 const tempbtn = document.querySelector(".tempbtn");
 let getLocation = document.querySelector("#search");
-const cityError = document.querySelector(".error");
 const mainContainer = document.getElementById("main_container");
 let tempObject;
 
@@ -18,6 +17,7 @@ const backgroundImage = () => {
     myImage.style.top = "0px";
     myImage.setAttribute("alt", "photo by pexel-stein-egil-liland");
     content.append(myImage);
+
 }
 const ctof = function (num) {
     let convertedNum = (Math.round(((parseInt(num) * 9 / 5) + 32) * 10) / 10);
@@ -89,15 +89,12 @@ async function loadTimeJson() {
 }
 
 async function loadJson() {
-
         let getLocation = document.querySelector("#search").value;
         let weatherApi = getWeatherApi(`https://api.openweathermap.org/data/2.5/weather?q=${getLocation}&units=metric&appid=faa4a0770c3a396ae2aa2262e23c2e0c`, {
             mode: "cors"
         });
         let weatherData = await weatherApi;
         return weatherData;
-
-        // throw new Error("oops");
     }
 
 async function getWeatherDescription() {
@@ -124,8 +121,7 @@ async function getCity() {
     const cityContainer = document.querySelector(".city_container");
     let returnedData = await loadJson();
     let cityName = returnedData.name;
-    let cityCountry = returnedData.sys.country;
-    cityContainer.textContent = `${cityName}.${cityCountry}`;
+    cityContainer.textContent = `${cityName}`;
 }
 
 async function getDateTime() {
@@ -166,29 +162,34 @@ async function getWind() {
     let speedValue = 3.6;
     let returnedData = await loadJson();
     let wind = returnedData.wind;
-    windspeedContainer.textContent = (`Wind ${Math.round((wind.speed) * speedValue)}`);
+    windspeedContainer.textContent = (`Wind ${Math.round((wind.speed) * speedValue)} Speed`);
 }
 
-function allComponents() {
-    getDateTime();
-    getWeatherDescription();
-    getCity();
-    getTemp();
-    getTempFeel();
-    getHumidity();
-    getWind();
-    getIcon();
+async function allComponents() {
+    try{
+    await getDateTime();
+    await getWeatherDescription();
+    await getCity();
+    await getTemp();
+    await getTempFeel();
+    await getHumidity();
+    await getWind();
+    await getIcon();
     tempbtn.style.padding = "10px";
     tempbtn.style.display = "flex";
     tempbtn.style.justifyContent = "center";
     tempbtn.style.alignItems = "center";
     mainContainer.style.display = "flex";
+    document.querySelector(".error").style.display = "none";
+    }catch(err){
+        document.querySelector(".error").style.display = "flex";
+        document.querySelector(".error").textContent = "location not found. Search must be in form of City,State or City,Country";
+    }
 }
 
 searchbtn.addEventListener("click", () => {
-    if (getLocation.value == "") {
-        getLocation.value = "Enter a City";
-    } else {
+    if(document.querySelector("#search").value == ""){
+    }else{
         allComponents();
     }
 });
