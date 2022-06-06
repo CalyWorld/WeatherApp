@@ -1,20 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Project</title>
+    <link rel="icon" type="image/x-icon" href="/src/images/">
+    <script src="https://kit.fontawesome.com/4f73659547.js" crossorigin="anonymous"></script>
     <script defer src="main.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 </head>
+
 <body>
     <div id="content">
         <form class="weather_form">
-            <input id="search" type="text" placeholder="Enter City..." name="search">
-            <div class="searchbtn" type="submit">search</div>
+            <div id="search_container">
+                    <input id="search" type="text" placeholder="Enter City..." name="search" required minlength="3">
+                    <div class="searchbtn" type="submit"><i class="fa-brands fa-searchengin"></i></div>
+                </div>
+                <span class="error" style="display:none; justify-content: center; align-items:center;"></span>
         </form>
+        <div id="main_container">
+            <div id="leftside_container">
+                <div class="innerleftside_container">
+                    <div id="imageContainer">
+                        <img src="#">
+                    </div>
+                    <h1 class="description_container"></h1>
+                    <div class="city_location">
+                        <p class="city_container"></p>
+                    </div>
+                    <div class="date_time">
+                        <p class="dateTime"></p>
+                    </div>
+                    <div class="temp_container">
+                        <h1 class="temp_display"></h1>
+                        <div class="temp_parameter">°C</div>
+                    </div>
+                    <div id="button_container">
+                        <div class="tempbtn" type="submit">Display
+                            <div class="tempbtn_parameter">°C</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="rightside_container">
+                <div class="innerrightside_container">
+                    <div class="tempfeel_container">
+                        <p class="feels"></p>
+                        <p class="tempfeel_parameter">°C</p>
+                    </div>
+                    <div class="tempfeel_container">
+                        <p class="humidity"></p>
+                        <p class="parameter">%</p>
+                    </div>
+                    <div class="tempfeel_container">
+                        <p class="wind"></p>
+                        <p class="parameter">KM/h</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body> photo by Vincenth Guth
+</body>
+
 </html>
